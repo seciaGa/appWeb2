@@ -20,7 +20,9 @@ namespace appWeb2.Models
 
            [Required]
            [StringLength(255)]
-            public string Password { get; set; }
+            public byte[] Password { get; set; }
+
+        public string salt { get; set; }
 
         [Required]
         public DateTime FechaRegistro { get; set; } = DateTime.Now;
