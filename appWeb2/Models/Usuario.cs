@@ -4,6 +4,8 @@ namespace appWeb2.Models
 {
     public class Usuario
     {
+        internal readonly string correo;
+
         [Key]
         public int Id { get; set; }
 

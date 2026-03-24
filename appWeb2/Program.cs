@@ -9,6 +9,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(
         builder.Configuration.GetConnectionString("con")));
 
+builder.Services.AddSession();
 builder.Services.AddControllersWithViews();
 builder.Services.AddAuthorization();
 var app = builder.Build();
@@ -27,6 +28,8 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
+
+app.UseSession();
 
 app.MapControllerRoute(
     name: "default",

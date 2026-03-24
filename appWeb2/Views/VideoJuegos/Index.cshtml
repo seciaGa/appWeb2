@@ -1,31 +1,31 @@
 ﻿@model IEnumerable<appWeb2.Models.VideoJuegos>
-<h2>Lista de Videojuego</h2>
-<a asp-action="Create" class="btn btn-primary">Nuevo Juego</a>
-<table class="table">
-    <thead>
-        <tr>
-            <th>Titulo</th>
-            <th>Descripcion</th>
-            <th>Precio</th>
-            <th>Categoria</th>
-            <th>Descripción</th>
-            <th>Acciones</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var juego in Model)
-        {
-            <tr>
-                <td>@juego.Titulo</td>
-                <td>@juego.Descripcion</td>
-                <td>@juego.Precio</td>
-                <td>@juego.Categoria</td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@juego.Id">Editar</a>
-                    <a asp-action="Delete" asp-route-id="@juego.Id">Ver</a> 
-                    <a asp-action="Delete" asp-route-id="@juego.Id">Eliminar</a>
-                </td>
-            </tr>
-}
-    </tbody>
-</table>
+
+<h2>Lista de Videojuegos</h2>
+
+<a asp-action="Create" class="btn btn-primary mb-3">Nuevo Juego</a>
+
+<div class="row">
+    @foreach (var juego in Model)
+    {
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 shadow">
+
+                <img src="@juego.Imagen" class="card-img-top" style="height:200px; object-fit:cover;" />
+
+                <div class="card-body">
+                    <h5 class="card-title">@juego.Titulo</h5>
+                    <p class="card-text"><strong>Precio:</strong> $@juego.Precio</p>
+                    <p class="card-text"><strong>Categoría:</strong> @juego.Categoria</p>
+                    <p class="card-text">@juego.Descripcion</p>
+                </div>
+
+                <div class="card-footer text-center">
+                    <a asp-action="Edit" asp-route-id="@juego.Id" class="btn btn-warning btn-sm">Editar</a>
+                    <a asp-action="#" asp-route-id="@juego.Id" class="btn btn-info btn-sm">Ver</a>
+                    <a asp-action="Delete" asp-route-id="@juego.Id" class="btn btn-danger btn-sm">Eliminar</a>
+                </div>
+
+            </div>
+        </div>
+    }
+</div>
