@@ -17,7 +17,8 @@ namespace appWeb2.Controllers
             _context = context;
         }
 
-        public IActionResult Index()
+        [HttpGet]
+        public IActionResult Login()
         {
             return View();
         }
@@ -28,17 +29,15 @@ namespace appWeb2.Controllers
             var user = _context.Usuarios
                 .FirstOrDefault(u => u.Email == model.correo && u.Password == model.password);
 
-            if (user == null)
+            if (user != null)
             {
                 HttpContext.Session.SetString("usuario", user.Nombre);
                 Console.WriteLine("Usuario logueado: " + user.Nombre);
                 return RedirectToAction("Index", "Home");
             }
+
             ViewBag.Error = "Correo o contraseña incorrectos";
             return View();
-                
-
-            
         }
     }
 }
