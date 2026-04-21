@@ -1,0 +1,21 @@
+﻿@model List<appWeb2.Models.Categoria>
+
+<h2 class="text-center mb-4">Categorías</h2>
+
+<div class="container">
+    <div class="row">
+        @foreach (var categoria in Model)
+        {
+            <div class="col-md-3 mb-3">
+                <a asp-action="PorCategoria" asp-route-id="@categoria.Id"
+                   style="text-decoration:none; color:inherit;">
+
+                    <div class="card text-center p-3 shadow">
+                        <h5>@categoria.Nombre</h5>
+                    </div>
+
+                </a>
+            </div>
+        }
+    </div>
+</div>

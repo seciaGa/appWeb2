@@ -1,0 +1,44 @@
+﻿@model appWeb2.Models.VideoJuegos
+
+<h2 class="mb-4">@Model.Titulo</h2>
+
+<div class="container">
+    <div class="row">
+
+        <!-- Imagen -->
+        <div class="col-md-5">
+            <img src="@Model.Imagen" class="img-fluid rounded shadow" />
+        </div>
+
+        <!-- Información -->
+        <div class="col-md-7">
+
+            <h4 class="text-primary">$@Model.Precio</h4>
+
+            <p><strong>Categoría:</strong> @Model.Categoria.Nombre</p>
+
+            <p><strong>Edad mínima:</strong> @Model.EdadMinima</p>
+
+            <p>
+                <strong>Estado:</strong>
+                @if (Model.EnPromocion)
+                {
+                    <span class="badge bg-success">En Promoción</span>
+                }
+                else
+                {
+                    <span class="badge bg-secondary">Normal</span>
+                }
+            </p>
+
+            <hr />
+
+            <h5>Descripción</h5>
+            <p>@Model.Descripcion</p>
+
+            <a asp-action="Index" class="btn btn-dark mt-3">Volver</a>
+
+        </div>
+
+    </div>
+</div>

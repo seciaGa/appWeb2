@@ -4,8 +4,6 @@ namespace appWeb2.Models
 {
     public class Usuario
     {
-        internal readonly string correo;
-
         [Key]
         public int Id { get; set; }
 
@@ -18,15 +16,14 @@ namespace appWeb2.Models
         [StringLength(150)]
         public string Email { get; set; }
 
-           [Required]
-           [StringLength(255)]
-            public byte[] Password { get; set; }
+        [Required]
+        public byte[] Password { get; set; }
 
         public string salt { get; set; }
 
         [Required]
         public DateTime FechaRegistro { get; set; } = DateTime.Now;
 
-         public ICollection<Compra> Compras { get; set; }
+        public ICollection<Compra> Compras { get; set; }
     }
 }

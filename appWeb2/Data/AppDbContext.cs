@@ -1,5 +1,6 @@
 ﻿using appWeb2.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Collections;
 
 namespace appWeb2.Data
 {
@@ -11,6 +12,8 @@ namespace appWeb2.Data
         public DbSet<Usuario> Usuarios { get; set; }
         public DbSet<VideoJuegos> VideoJuegos { get; set; }
         public DbSet<Compra> Compras { get; set; }
+        public DbSet<Categoria> Categorias { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

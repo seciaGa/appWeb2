@@ -17,17 +17,21 @@ namespace appWeb2.Models
         public decimal Precio { get; set; }
 
         [Required]
-        [StringLength(100)]
-        public string Categoria { get; set; }
-
+        public int CategoriaId { get; set; }
+        [ForeignKey("CategoriaId")]
+        public Categoria? Categoria { get; set; }
 
         [StringLength(500)]
         public string Descripcion { get; set; }
 
         public string? Imagen { get; set; }
-         public ICollection<Compra>? Compras { get; set; }
 
+        public ICollection<Compra>? Compras { get; set; }
 
+        public DateTime? FechaRegistro { get; set; } = DateTime.Now;
 
+        public bool EnPromocion { get; set; } = false;
+
+        public int? EdadMinima { get; set; }
     }
 }

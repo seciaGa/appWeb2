@@ -8,54 +8,62 @@
 
         <!-- CATEGORÍAS -->
         <div class="col-md-3 mb-3">
-            <div class="feature-card">
-                <i class="fas fa-gamepad"></i>
-                <h5>Categorías</h5>
-                <p>Explora por tipo de juego</p>
-            </div>
+            <a asp-action="Categorias" asp-controller="VideoJuegos" style="text-decoration:none; color:inherit;">
+                <div class="feature-card">
+                    <i class="fas fa-gamepad"></i>
+                    <h5>Categorías</h5>
+                    <p>Explora por tipo de juego</p>
+                </div>
+            </a>
         </div>
 
-        <!-- MÁS VENDIDOS -->
         <div class="col-md-3 mb-3">
-            <div class="feature-card">
-                <i class="fas fa-fire"></i>
-                <h5>Más Vendidos</h5>
-                <p>Los juegos más populares</p>
-            </div>
+            <a asp-action="Index" style="text-decoration:none; color:inherit;">
+                <div class="feature-card">
+                    <i class="fas fa-fire"></i>
+                    <h5>Más Vendidos</h5>
+                    <p>Los juegos más populares</p>
+                </div>
+            </a>
         </div>
 
-        <!-- NUEVOS -->
         <div class="col-md-3 mb-3">
-            <div class="feature-card">
-                <i class="fas fa-star"></i>
-                <h5>Nuevos Juegos</h5>
-                <p>Lo último en la tienda</p>
-            </div>
+            <a asp-action="Nuevos" asp-controller="VideoJuegos" style="text-decoration:none; color:inherit;">
+                <div class="feature-card">
+                    <i class="fas fa-star"></i>
+                    <h5>Nuevos Juegos</h5>
+                    <p>Lo último en la tienda</p>
+                </div>
+            </a>
         </div>
 
         <!-- PROMOCIONES -->
         <div class="col-md-3 mb-3">
-            <div class="feature-card">
-                <i class="fas fa-tags"></i>
-                <h5>Promociones</h5>
-                <p>Ofertas especiales</p>
-            </div>
+            <a asp-action="Promociones" asp-controller="VideoJuegos" style="text-decoration:none; color:inherit;">
+                <div class="feature-card">
+                    <i class="fas fa-tags"></i>
+                    <h5>Promociones</h5>
+                    <p>Ofertas especiales</p>
+                </div>
+            </a>
         </div>
 
     </div>
 
+    <h2 class="text-center fw-bold mb-4" style="color: #FFD700;">
+        Videojuegos Disponibles
+    </h2>
 
-    <h2 class="text-center fw-bold mb-4" style="color: #FFD700;"> Videojuegos Disponibles</h2>
     <div class="row g-4">
         @foreach (var juegos in Model)
         {
             <div class="col-md-6 col-lg-4 col-xl-3">
                 <div class="card game-card h-100">
 
-                    <!-- 🔴 BADGE SUPERIOR -->
-                    <div class="badge-top">+12</div>
+                    <!-- BADGE DINÁMICO -->
+                    <div class="badge-top">+@juegos.EdadMinima</div>
 
-                    <!-- ❤️ FAVORITO -->
+                    <!--FAVORITO -->
                     <div class="favorite">
                         <i class="fa-regular fa-heart"></i>
                     </div>
@@ -71,7 +79,6 @@
                             @juegos.Titulo
                         </h5>
 
-
                         <!-- PRECIO -->
                         <h4 class="price mt-2">
                             $@juegos.Precio
@@ -80,11 +87,19 @@
                         <!-- CATEGORÍA -->
                         <div class="d-flex align-items-center mt-auto">
                             <i class="fa-solid fa-gamepad me-2 text-warning"></i>
-                            <span class="text-muted">@juegos.Categoria</span>
+                            <span class="text-muted fw-semibold">
+                                @juegos.Categoria?.Nombre
+                            </span>
                         </div>
+
+                        @if (juegos.EnPromocion)
+                        {
+                            <span class="badge bg-danger mt-2">En promoción</span>
+                        }
 
                     </div>
                 </div>
             </div>
         }
     </div>
+</div>

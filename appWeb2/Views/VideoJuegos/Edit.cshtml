@@ -1,4 +1,4 @@
-﻿@model appWeb2.Models.VideoJuegos
+@model appWeb2.Models.VideoJuegos
 
 <h2>Editar Videojuego</h2>
 <form asp-action="Edit" method="post" enctype="multipart/form-data">
@@ -15,9 +15,13 @@
         <span asp-validation-for="Precio"></span>
     </div>
     <div>
-        <label>Categoría</label>
-        <input asp-for="Categoria" class="form-control" />
-        <span asp-validation-for="Categoria"></span>
+        <div>
+            <label>Categoría</label>
+            <select asp-for="CategoriaId" class="form-control" asp-items="ViewBag.Categorias">
+                <option value="">-- Seleccione una Categoría --</option>
+            </select>
+            <span asp-validation-for="CategoriaId" class="text-danger"></span>
+        </div>
     </div>
     <div>
         <label>Descripción</label>
@@ -31,6 +35,16 @@
     <div>
         <label>Imagen Nueva</label>
         <input type="file" name="archivoImagen" class="form-control" />
+    </div>
+    <div class="mb-2">
+        <label>Edad mínima</label>
+        <input asp-for="EdadMinima" class="form-control" />
+        <span asp-validation-for="EdadMinima" class="text-danger"></span>
+    </div>
+
+    <div class="form-check mt-2">
+        <input asp-for="EnPromocion" class="form-check-input" />
+        <label class="form-check-label">En promoción</label>
     </div>
 
     <button type="submit" class="btn btn-primary">Actualizar</button>

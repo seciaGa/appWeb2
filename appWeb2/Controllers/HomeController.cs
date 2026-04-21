@@ -16,7 +16,9 @@ namespace appWeb2.Controllers
         }
     public async Task<IActionResult> Index()
         {
-            var juegos = await _context.VideoJuegos.ToListAsync();
+            var juegos = await _context.VideoJuegos
+                .Include(x => x.Categoria)
+                .ToListAsync();
             return View(juegos);
         }
 

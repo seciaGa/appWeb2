@@ -1,8 +1,6 @@
-﻿@model IEnumerable<appWeb2.Models.VideoJuegos>
+@model IEnumerable<appWeb2.Models.VideoJuegos>
 
-<h2>Lista de Videojuegos</h2>
-
-<a asp-action="Create" class="btn btn-primary mb-3">Nuevo Juego</a>
+<h2 class="mb-4">Nuevos Videojuegos</h2>
 
 <div class="row">
     @foreach (var juego in Model)
@@ -18,11 +16,8 @@
                     <p class="card-text"><strong>Categoría:</strong> @juego.Categoria.Nombre</p>
                     <p class="card-text">@juego.Descripcion</p>
                 </div>
-
                 <div class="card-footer text-center">
-                    <a asp-action="Edit" asp-route-id="@juego.Id" class="btn btn-warning btn-sm">Editar</a>
                     <a asp-action="Detalle" asp-route-id="@juego.Id" class="btn btn-info btn-sm">Ver</a>
-                    <a asp-action="Delete" asp-route-id="@juego.Id" class="btn btn-danger btn-sm">Eliminar</a>
                 </div>
 
             </div>

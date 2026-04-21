@@ -2,7 +2,7 @@
 using appWeb2.Data;
 using Microsoft.EntityFrameworkCore;
 using appWeb2.Models;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
+
 namespace appWeb2.Controllers
 {
     public class VideoJuegosController : Controller
@@ -14,22 +14,44 @@ namespace appWeb2.Controllers
             _context = context;
         }
 
+        // 🔹 LISTAR JUEGOS
         public async Task<IActionResult> Index()
         {
-            var juegos = await _context.VideoJuegos.ToListAsync();
+            var juegos = await _context.VideoJuegos
+                .Include(x => x.Categoria)
+                .ToListAsync();
+
             return View(juegos);
         }
+
+        // 🔹 CREATE (GET)
         public IActionResult Create()
         {
+            ViewBag.Categorias = new Microsoft.AspNetCore.Mvc.Rendering.SelectList(
+                _context.Categorias,
+                "Id",
+                "Nombre"
+            );
+
             return View();
         }
 
+        // 🔹 CREATE (POST)
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(VideoJuegos juegos, IFormFile archivoImagen)
         {
             if (!ModelState.IsValid)
+            {
+                ViewBag.Categorias = new Microsoft.AspNetCore.Mvc.Rendering.SelectList(
+                    _context.Categorias,
+                    "Id",
+                    "Nombre",
+                    juegos.CategoriaId
+                );
+
                 return View(juegos);
+            }
 
             if (archivoImagen != null && archivoImagen.Length > 0)
             {
@@ -43,15 +65,15 @@ namespace appWeb2.Controllers
                 }
 
                 juegos.Imagen = "/imagenes/" + nombreArchivo;
-                _context.Add(juegos);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
             }
-            
-            return View(juegos);
-            
+
+            _context.Add(juegos);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
         }
 
+        // 🔹 EDIT (GET)
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null) return NotFound();
@@ -59,9 +81,17 @@ namespace appWeb2.Controllers
             var juego = await _context.VideoJuegos.FindAsync(id);
             if (juego == null) return NotFound();
 
+            ViewBag.Categorias = new Microsoft.AspNetCore.Mvc.Rendering.SelectList(
+                _context.Categorias,
+                "Id",
+                "Nombre",
+                juego.CategoriaId
+            );
+
             return View(juego);
         }
 
+        // 🔹 EDIT (POST)
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, VideoJuegos juegos, IFormFile? archivoImagen)
@@ -78,8 +108,10 @@ namespace appWeb2.Controllers
             {
                 juegoDB.Titulo = juegos.Titulo;
                 juegoDB.Precio = juegos.Precio;
-                juegoDB.Categoria = juegos.Categoria;
+                juegoDB.CategoriaId = juegos.CategoriaId;
                 juegoDB.Descripcion = juegos.Descripcion;
+                juegoDB.EdadMinima = juegos.EdadMinima;
+                juegoDB.EnPromocion = juegos.EnPromocion;
 
                 if (archivoImagen != null && archivoImagen.Length > 0)
                 {
@@ -111,36 +143,100 @@ namespace appWeb2.Controllers
                 }
 
                 await _context.SaveChangesAsync();
-
                 return RedirectToAction(nameof(Index));
             }
+
+            ViewBag.Categorias = new Microsoft.AspNetCore.Mvc.Rendering.SelectList(
+                _context.Categorias,
+                "Id",
+                "Nombre",
+                juegos.CategoriaId
+            );
 
             return View(juegoDB);
         }
 
-
+        // 🔹 DELETE (GET)
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null) return NotFound();
 
-            var juego = await _context.VideoJuegos.FirstOrDefaultAsync(n => n.Id == id);
+            var juego = await _context.VideoJuegos
+                .Include(x => x.Categoria)
+                .FirstOrDefaultAsync(n => n.Id == id);
 
             if (juego == null) return NotFound();
 
             return View(juego);
         }
 
+        // 🔹 DELETE (POST)
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var juego = await _context.VideoJuegos.FindAsync(id);
+
             if (juego != null)
             {
                 _context.VideoJuegos.Remove(juego);
                 await _context.SaveChangesAsync();
             }
+
             return RedirectToAction(nameof(Index));
+        }
+
+        // 🔹 LISTAR CATEGORÍAS
+        public IActionResult Categorias()
+        {
+            var categorias = _context.Categorias.ToList();
+            return View(categorias);
+        }
+
+        // 🔹 JUEGOS POR CATEGORÍA
+        public IActionResult PorCategoria(int id)
+        {
+            var juegos = _context.VideoJuegos
+                .Include(x => x.Categoria)
+                .Where(x => x.CategoriaId == id)
+                .ToList();
+
+            return View("Nuevos", juegos);
+        }
+
+        // 🔹 NUEVOS
+        public IActionResult Nuevos()
+        {
+            var juegos = _context.VideoJuegos
+                .Include(x => x.Categoria)
+                .OrderByDescending(x => x.FechaRegistro)
+                .Take(15)
+                .ToList();
+
+            return View(juegos);
+        }
+
+        // 🔹 PROMOCIONES
+        public IActionResult Promociones()
+        {
+            var juegos = _context.VideoJuegos
+                .Include(x => x.Categoria)
+                .Where(x => x.EnPromocion == true)
+                .ToList();
+
+            return View("Index", juegos);
+        }
+
+        public async Task<IActionResult> Detalle(int id)
+        {
+            var juego = await _context.VideoJuegos
+                .Include(x => x.Categoria)
+                .FirstOrDefaultAsync(x => x.Id == id);
+
+            if (juego == null)
+                return NotFound();
+
+            return View(juego);
         }
     }
 }
